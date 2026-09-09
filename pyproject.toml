@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trajectory-dependence"
+version = "1.0.0"
+description = "A provenance-aware causal evaluation harness for trajectory dependence in agentic AI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Jason M. Pittman"}]
+keywords = ["agent evaluation", "causal intervention", "provenance", "AI safety"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+analysis = ["matplotlib>=3.8", "numpy>=1.26"]
+model = [
+  "mlx==0.32.0; platform_system == 'Darwin' and platform_machine == 'arm64'",
+  "mlx-lm==0.31.3; platform_system == 'Darwin' and platform_machine == 'arm64'",
+]
+
+[project.urls]
+Repository = "https://github.com/jasonmpittman/trajectory-dependence"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src", "src.*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

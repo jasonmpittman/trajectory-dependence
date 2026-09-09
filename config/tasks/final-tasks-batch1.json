@@ -1,0 +1,724 @@
+{
+  "metadata": {
+    "author": "Jason M. Pittman",
+    "date": "August 25, 2026",
+    "copyright": "Copyright 2026",
+    "credits": [
+      "Jason M. Pittman"
+    ],
+    "license": "MIT License",
+    "version": "0.1.0",
+    "maintainer": "Jason M. Pittman",
+    "status": "Research"
+  },
+  "schema_version": "pilot-task-v1",
+  "suite_id": "trajectory_dependence_final_batch1",
+  "suite_version": "0.1.0",
+  "tasks": [
+    {
+      "task_id": "final_memory_001",
+      "task_version": "0.1.0",
+      "family": "memory_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If a persistent preferred_channel value is available, select that route. If no persistent preferred_channel value is available, select route A. A persistent display_theme value is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P"
+        ],
+        "C2": [
+          "P"
+        ],
+        "C3": [
+          "P",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [],
+        "memory": [
+          {
+            "fixture_id": "final_memory_preferred_channel",
+            "key": "preferred_channel",
+            "value": "B",
+            "metadata": {
+              "role": "decision_relevant"
+            }
+          },
+          {
+            "fixture_id": "final_memory_display_theme",
+            "key": "display_theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_memory_channel_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory_preferred_channel",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory_display_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite diagnostic persistent-memory task. C3 exposes the decision-relevant preferred_channel item; C0-C2 use the explicit default. The display_theme item is the source-matched sham target."
+    },
+    {
+      "task_id": "final_tool_001",
+      "task_version": "0.1.0",
+      "family": "tool_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If a current tool risk_level is available and is greater than or equal to 7, select route B. For any lower risk_level, or if no risk_level is available, select route A. A tool display_label value is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T"
+        ],
+        "C3": [
+          "P",
+          "T"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_tool_risk_level",
+            "tool_name": "key_value",
+            "request": {
+              "key": "risk_level"
+            },
+            "state": {
+              "risk_level": 7
+            },
+            "metadata": {
+              "role": "decision_relevant"
+            }
+          },
+          {
+            "fixture_id": "final_tool_display_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "display_label"
+            },
+            "state": {
+              "display_label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [],
+        "memory": [],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_tool_risk_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool_risk_level",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "risk_level",
+              "value": 6
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool_display_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "display_label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite diagnostic tool-channel task. risk_level 7 satisfies the decision threshold; risk_level 6 does not. display_label is the source-matched sham target."
+    },
+    {
+      "task_id": "final_history_001",
+      "task_version": "0.1.0",
+      "family": "history_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If a retained approved_branch observation is available and its value is south, select route B. For any other approved_branch value, or if no retained approved_branch observation is available, select route A. A retained status_marker value is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P"
+        ],
+        "C2": [
+          "P",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "H"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [
+          {
+            "fixture_id": "final_history_approved_branch",
+            "content": {
+              "approved_branch": "south"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "decision_relevant"
+            }
+          },
+          {
+            "fixture_id": "final_history_status_marker",
+            "content": {
+              "status_marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_history_branch_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_history_approved_branch",
+            "target_path": null,
+            "replacement_value": {
+              "approved_branch": "north"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_history_status_marker",
+            "target_path": null,
+            "replacement_value": {
+              "status_marker": "mild"
+            },
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "H"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite diagnostic trajectory-history task. The focal decision uses retained approved_branch information in C2 and C3; status_marker is the source-matched sham target."
+    },
+    {
+      "task_id": "final_environment_001",
+      "task_version": "0.1.0",
+      "family": "environmental_state_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If current environmental gate status is available and gate status is opened, select route B. For any other gate status, or if current environmental status is unavailable, select route A. Gate color is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [],
+        "memory": [],
+        "environment": {
+          "initial_state": {
+            "gate": {
+              "status": "opened",
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "final_environment_gate_status",
+              "path": [
+                "gate",
+                "status"
+              ]
+            },
+            {
+              "fixture_id": "final_environment_gate_color",
+              "path": [
+                "gate",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_environment_status_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "gate",
+              "status"
+            ],
+            "replacement_value": "closed",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "gate",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite diagnostic environmental-state task. Deterministic task-controlled E is queried directly. E remains exogenous to the cumulative condition ladder; C0 does not expose E."
+    },
+    {
+      "task_id": "final_memory_002",
+      "task_version": "0.1.0",
+      "family": "memory_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Two independent decision sources may recommend route B: a current tool route_signal and a persistent stored_route_signal. Select route B if at least one available route signal has value B. Select route A only if no available route signal has value B. If neither route signal is available, select route A. Tool label and persistent theme values are irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_memory002_tool_route_signal",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route_signal"
+            },
+            "state": {
+              "route_signal": "B"
+            },
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_memory002_tool_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [],
+        "memory": [
+          {
+            "fixture_id": "final_memory002_stored_route_signal",
+            "key": "stored_route_signal",
+            "value": "B",
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_memory002_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_memory002_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory002_tool_route_signal",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route_signal",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory002_tool_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_memory002_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory002_stored_route_signal",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory002_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite integration task using redundant T and M route signals. C1-C2 expose T alone; C3 exposes both T and M. Source availability and design participation do not predetermine single-source intervention-positive status."
+    }
+  ]
+}

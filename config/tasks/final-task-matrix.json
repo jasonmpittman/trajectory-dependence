@@ -1,0 +1,105 @@
+{
+  "metadata": {
+    "author": "Jason M. Pittman",
+    "date": "August 27, 2026",
+    "license": "MIT License",
+    "version": "0.1.1",
+    "status": "Research"
+  },
+  "schema_version": "final-task-matrix-v1",
+  "matrix_id": "trajectory_dependence_final_matrix",
+  "target_total_tasks": 20,
+  "target_diagnostic_tasks": 4,
+  "target_integration_tasks": 16,
+  "minimum_tasks_per_family": 3,
+  "real_model_candidate_screening_allowed": false,
+  "families": {
+    "memory_dependence": {
+      "diagnostic": [
+        "final_memory_001"
+      ],
+      "integration": [
+        "final_memory_002",
+        "final_memory_003"
+      ]
+    },
+    "tool_dependence": {
+      "diagnostic": [
+        "final_tool_001"
+      ],
+      "integration": [
+        "final_tool_002",
+        "final_tool_003"
+      ]
+    },
+    "history_dependence": {
+      "diagnostic": [
+        "final_history_001"
+      ],
+      "integration": [
+        "final_history_002",
+        "final_history_003"
+      ]
+    },
+    "environmental_state_dependence": {
+      "diagnostic": [
+        "final_environment_001"
+      ],
+      "integration": [
+        "final_environment_002",
+        "final_environment_003"
+      ]
+    },
+    "conflict_integration": {
+      "diagnostic": [],
+      "integration": [
+        "final_conflict_001",
+        "final_conflict_002",
+        "final_conflict_003",
+        "final_conflict_004"
+      ]
+    },
+    "multi_source_dependence": {
+      "diagnostic": [],
+      "integration": [
+        "final_multisource_001",
+        "final_multisource_002",
+        "final_multisource_003",
+        "final_multisource_004"
+      ]
+    }
+  },
+  "required_integration_archetypes": {
+    "redundant_evidence": 4,
+    "conflict_source_priority": 4,
+    "conditional_use": 3,
+    "threshold_or_conjunctive": 2,
+    "voting_or_multi_source_aggregation": 3
+  },
+  "source_coverage": {
+    "T": {
+      "conditions": [
+        "C1",
+        "C2",
+        "C3"
+      ]
+    },
+    "H": {
+      "conditions": [
+        "C2",
+        "C3"
+      ]
+    },
+    "M": {
+      "conditions": [
+        "C3"
+      ]
+    },
+    "E": {
+      "conditions": [
+        "task_controlled"
+      ]
+    }
+  },
+  "minimum_structurally_multisource_tasks": 4
+}

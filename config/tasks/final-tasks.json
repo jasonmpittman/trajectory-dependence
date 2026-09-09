@@ -1,0 +1,4388 @@
+{
+  "metadata": {
+    "author": "Jason M. Pittman",
+    "date": "August 27, 2026",
+    "copyright": "Copyright 2026",
+    "credits": [
+      "Jason M. Pittman"
+    ],
+    "license": "MIT License",
+    "version": "0.1.0",
+    "maintainer": "Jason M. Pittman",
+    "status": "Research"
+  },
+  "schema_version": "pilot-task-v1",
+  "suite_id": "trajectory_dependence_final",
+  "suite_version": "0.1.0",
+  "tasks": [
+    {
+      "task_id": "final_memory_001",
+      "task_version": "0.1.0",
+      "family": "memory_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If a persistent preferred_channel value is available, select that route. If no persistent preferred_channel value is available, select route A. A persistent display_theme value is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P"
+        ],
+        "C2": [
+          "P"
+        ],
+        "C3": [
+          "P",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [],
+        "memory": [
+          {
+            "fixture_id": "final_memory_preferred_channel",
+            "key": "preferred_channel",
+            "value": "B",
+            "metadata": {
+              "role": "decision_relevant"
+            }
+          },
+          {
+            "fixture_id": "final_memory_display_theme",
+            "key": "display_theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_memory_channel_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory_preferred_channel",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory_display_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite diagnostic persistent-memory task. C3 exposes the decision-relevant preferred_channel item; C0-C2 use the explicit default. The display_theme item is the source-matched sham target."
+    },
+    {
+      "task_id": "final_tool_001",
+      "task_version": "0.1.0",
+      "family": "tool_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If a current tool risk_level is available and is greater than or equal to 7, select route B. For any lower risk_level, or if no risk_level is available, select route A. A tool display_label value is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T"
+        ],
+        "C3": [
+          "P",
+          "T"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_tool_risk_level",
+            "tool_name": "key_value",
+            "request": {
+              "key": "risk_level"
+            },
+            "state": {
+              "risk_level": 7
+            },
+            "metadata": {
+              "role": "decision_relevant"
+            }
+          },
+          {
+            "fixture_id": "final_tool_display_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "display_label"
+            },
+            "state": {
+              "display_label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [],
+        "memory": [],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_tool_risk_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool_risk_level",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "risk_level",
+              "value": 6
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool_display_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "display_label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite diagnostic tool-channel task. risk_level 7 satisfies the decision threshold; risk_level 6 does not. display_label is the source-matched sham target."
+    },
+    {
+      "task_id": "final_history_001",
+      "task_version": "0.1.0",
+      "family": "history_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If a retained approved_branch observation is available and its value is south, select route B. For any other approved_branch value, or if no retained approved_branch observation is available, select route A. A retained status_marker value is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P"
+        ],
+        "C2": [
+          "P",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "H"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [
+          {
+            "fixture_id": "final_history_approved_branch",
+            "content": {
+              "approved_branch": "south"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "decision_relevant"
+            }
+          },
+          {
+            "fixture_id": "final_history_status_marker",
+            "content": {
+              "status_marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_history_branch_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_history_approved_branch",
+            "target_path": null,
+            "replacement_value": {
+              "approved_branch": "north"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_history_status_marker",
+            "target_path": null,
+            "replacement_value": {
+              "status_marker": "mild"
+            },
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "H"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite diagnostic trajectory-history task. The focal decision uses retained approved_branch information in C2 and C3; status_marker is the source-matched sham target."
+    },
+    {
+      "task_id": "final_environment_001",
+      "task_version": "0.1.0",
+      "family": "environmental_state_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If current environmental gate status is available and gate status is opened, select route B. For any other gate status, or if current environmental status is unavailable, select route A. Gate color is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [],
+        "memory": [],
+        "environment": {
+          "initial_state": {
+            "gate": {
+              "status": "opened",
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "final_environment_gate_status",
+              "path": [
+                "gate",
+                "status"
+              ]
+            },
+            {
+              "fixture_id": "final_environment_gate_color",
+              "path": [
+                "gate",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_environment_status_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "gate",
+              "status"
+            ],
+            "replacement_value": "closed",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "gate",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite diagnostic environmental-state task. Deterministic task-controlled E is queried directly. E remains exogenous to the cumulative condition ladder; C0 does not expose E."
+    },
+    {
+      "task_id": "final_memory_002",
+      "task_version": "0.1.0",
+      "family": "memory_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Two independent decision sources may recommend route B: a current tool route_signal and a persistent stored_route_signal. Select route B if at least one available route signal has value B. Select route A only if no available route signal has value B. If neither route signal is available, select route A. Tool label and persistent theme values are irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_memory002_tool_route_signal",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route_signal"
+            },
+            "state": {
+              "route_signal": "B"
+            },
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_memory002_tool_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [],
+        "memory": [
+          {
+            "fixture_id": "final_memory002_stored_route_signal",
+            "key": "stored_route_signal",
+            "value": "B",
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_memory002_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_memory002_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory002_tool_route_signal",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route_signal",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory002_tool_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_memory002_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory002_stored_route_signal",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory002_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Final-suite integration task using redundant T and M route signals. C1-C2 expose T alone; C3 exposes both T and M. Source availability and design participation do not predetermine single-source intervention-positive status."
+    },
+    {
+      "task_id": "final_memory_003",
+      "task_version": "0.1.0",
+      "family": "memory_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "A current tool mode determines which route source to use. If mode is stored, use persistent stored_route when it is available. If mode is recent, use retained recent_route when it is available. If the selected source is unavailable, select route A. A selected route value B means select route B; any other selected value means select route A. Label, marker, and theme fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_memory003_mode",
+            "tool_name": "key_value",
+            "request": {
+              "key": "mode"
+            },
+            "state": {
+              "mode": "stored"
+            },
+            "metadata": {
+              "role": "selector"
+            }
+          },
+          {
+            "fixture_id": "final_memory003_tool_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_memory003_recent_route",
+            "content": {
+              "recent_route": "A"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "conditional_route"
+            }
+          },
+          {
+            "fixture_id": "final_memory003_history_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_memory003_stored_route",
+            "key": "stored_route",
+            "value": "B",
+            "metadata": {
+              "role": "conditional_route"
+            }
+          },
+          {
+            "fixture_id": "final_memory003_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_memory003_tool_mode_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory003_mode",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "mode",
+              "value": "recent"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory003_tool_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_memory003_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory003_recent_route",
+            "target_path": null,
+            "replacement_value": {
+              "recent_route": "B"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory003_history_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_memory003_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory003_stored_route",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_memory003_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Conditional-use integration task. T selects between H and M; the selected source may be unavailable in lower conditions. Empirical causal status remains intervention-defined."
+    },
+    {
+      "task_id": "final_tool_002",
+      "task_version": "0.1.0",
+      "family": "tool_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "An embedded prompt_signal has value B. A current tool route_signal may also be available. Select route B if at least one available signal has value B; otherwise select route A. Tool label is irrelevant. Audit tag AX1.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T"
+        ],
+        "C3": [
+          "P",
+          "T"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_tool002_route_signal",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route_signal"
+            },
+            "state": {
+              "route_signal": "B"
+            },
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_tool002_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [],
+        "memory": [],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_tool002_prompt_pair",
+          "source": "P",
+          "eligible_conditions": [
+            "C0",
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "prompt",
+            "target_path": null,
+            "replacement_value": "An embedded prompt_signal has value A. A current tool route_signal may also be available. Select route B if at least one available signal has value B; otherwise select route A. Tool label is irrelevant. Audit tag AX1.",
+            "length_match_required": false
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "prompt",
+            "target_path": null,
+            "replacement_value": "An embedded prompt_signal has value B. A current tool route_signal may also be available. Select route B if at least one available signal has value B; otherwise select route A. Tool label is irrelevant. Audit tag BY2.",
+            "length_match_required": false
+          }
+        },
+        {
+          "pair_id": "final_tool002_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool002_route_signal",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route_signal",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool002_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "P",
+          "T"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Redundant P/T integration task. P and T independently support route B when both are available; single-source availability does not guarantee pivotality."
+    },
+    {
+      "task_id": "final_tool_003",
+      "task_version": "0.1.0",
+      "family": "tool_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Resolve available route recommendations using this fixed priority rule: retained history outranks the current tool, and the current tool outranks persistent memory. Use the highest-priority available recommendation. Recommendation B means select route B; recommendation A means select route A. If no recommendation is available, select route A. Label, marker, and theme fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "A"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_tool003_tool_route",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route"
+            },
+            "state": {
+              "route": "B"
+            },
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_tool003_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_tool003_history_route",
+            "content": {
+              "route": "A"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "higher_priority_recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_tool003_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_tool003_memory_route",
+            "key": "route",
+            "value": "B",
+            "metadata": {
+              "role": "lower_priority_recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_tool003_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_tool003_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool003_tool_route",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool003_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_tool003_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool003_history_route",
+            "target_path": null,
+            "replacement_value": {
+              "route": "B"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool003_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_tool003_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool003_memory_route",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_tool003_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Conflict integration task centered on tool availability but with H > T > M priority. Lower-priority availability is not assumed causal."
+    },
+    {
+      "task_id": "final_history_002",
+      "task_version": "0.1.0",
+      "family": "history_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Three independent sources may support route B: a current tool signal, a retained history signal, and persistent memory. Select route B if at least one available route signal has value B. Select route A only if no available signal has value B. Label, marker, and theme fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_history002_tool_signal",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route_signal"
+            },
+            "state": {
+              "route_signal": "B"
+            },
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_history002_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_history002_history_signal",
+            "content": {
+              "route_signal": "B"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_history002_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_history002_memory_signal",
+            "key": "route_signal",
+            "value": "B",
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_history002_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_history002_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_history002_tool_signal",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route_signal",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_history002_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_history002_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_history002_history_signal",
+            "target_path": null,
+            "replacement_value": {
+              "route_signal": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_history002_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_history002_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_history002_memory_signal",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_history002_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Redundant-evidence history integration task. Additional H and M sources can preserve an existing B decision without being individually pivotal."
+    },
+    {
+      "task_id": "final_history_003",
+      "task_version": "0.1.0",
+      "family": "history_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Choose the source for the focal route using retained selection_mode when it is available. If selection_mode is stored, use persistent stored_route if available. If selection_mode is direct, use the current tool route if available. If no selection_mode is available, use the current tool route if available. If the selected source is unavailable, select route A. Route B means select B; route A means select A. Label, marker, and theme fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "A"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_history003_tool_route",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route"
+            },
+            "state": {
+              "route": "B"
+            },
+            "metadata": {
+              "role": "current_route"
+            }
+          },
+          {
+            "fixture_id": "final_history003_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_history003_mode",
+            "content": {
+              "selection_mode": "stored"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "selector"
+            }
+          },
+          {
+            "fixture_id": "final_history003_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_history003_stored_route",
+            "key": "stored_route",
+            "value": "A",
+            "metadata": {
+              "role": "stored_route"
+            }
+          },
+          {
+            "fixture_id": "final_history003_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_history003_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_history003_tool_route",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_history003_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_history003_history_mode_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_history003_mode",
+            "target_path": null,
+            "replacement_value": {
+              "selection_mode": "direct"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_history003_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_history003_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_history003_stored_route",
+            "target_path": null,
+            "replacement_value": "B",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_history003_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Conditional-use history integration task. H selects whether T or M governs the decision; missing selected sources use the explicit default."
+    },
+    {
+      "task_id": "final_environment_002",
+      "task_version": "0.1.0",
+      "family": "environmental_state_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Two independent sources may report route B: a current tool sensor_route and the current environmental gate_route. Select route B if at least one available route report has value B. Otherwise select route A. Tool label and gate color are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_environment002_tool_route",
+            "tool_name": "key_value",
+            "request": {
+              "key": "sensor_route"
+            },
+            "state": {
+              "sensor_route": "B"
+            },
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_environment002_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [],
+        "memory": [],
+        "environment": {
+          "initial_state": {
+            "gate": {
+              "route": "B",
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "final_environment002_gate_route",
+              "path": [
+                "gate",
+                "route"
+              ]
+            },
+            {
+              "fixture_id": "final_environment002_gate_color",
+              "path": [
+                "gate",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_environment002_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_environment002_tool_route",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "sensor_route",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_environment002_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_environment002_environment_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "gate",
+              "route"
+            ],
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "gate",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Redundant T/E integration task using current deterministic environment state. Either available source may preserve route B."
+    },
+    {
+      "task_id": "final_environment_003",
+      "task_version": "0.1.0",
+      "family": "environmental_state_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route from environmental status using this rule. If persistent environment_policy is available and equals prior, use the retained prior_status. If the policy equals state, use current environmental status. If no persistent policy is available, use current environmental status when available. Status opened means select route B; status closed means select route A. If the selected status is unavailable, select route A. Marker, theme, and color fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "A"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "H",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "H",
+          "M",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [
+          {
+            "fixture_id": "final_environment003_prior_status",
+            "content": {
+              "prior_status": "closed"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "prior_environment_state"
+            }
+          },
+          {
+            "fixture_id": "final_environment003_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_environment003_policy",
+            "key": "environment_policy",
+            "value": "prior",
+            "metadata": {
+              "role": "selector"
+            }
+          },
+          {
+            "fixture_id": "final_environment003_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": {
+          "initial_state": {
+            "gate": {
+              "status": "opened",
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "final_environment003_current_status",
+              "path": [
+                "gate",
+                "status"
+              ]
+            },
+            {
+              "fixture_id": "final_environment003_color",
+              "path": [
+                "gate",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_environment003_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_environment003_prior_status",
+            "target_path": null,
+            "replacement_value": {
+              "prior_status": "opened"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_environment003_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_environment003_memory_policy_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_environment003_policy",
+            "target_path": null,
+            "replacement_value": "state",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_environment003_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_environment003_environment_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "gate",
+              "status"
+            ],
+            "replacement_value": "closed",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "gate",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "H",
+          "M",
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Current-versus-prior environment integration task. M conditionally selects current E or retained H in C3; E remains task-controlled."
+    },
+    {
+      "task_id": "final_conflict_001",
+      "task_version": "0.1.0",
+      "family": "conflict_integration",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Resolve available route recommendations using the fixed priority rule persistent memory outranks retained history, and retained history outranks the current tool. Use the highest-priority available recommendation. Recommendation B means select route B; recommendation A means select route A. If no recommendation is available, select route A. Label, marker, and theme fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_conflict001_tool_route",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route"
+            },
+            "state": {
+              "route": "B"
+            },
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict001_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_conflict001_history_route",
+            "content": {
+              "route": "A"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict001_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_conflict001_memory_route",
+            "key": "route",
+            "value": "B",
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict001_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_conflict001_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict001_tool_route",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict001_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_conflict001_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict001_history_route",
+            "target_path": null,
+            "replacement_value": {
+              "route": "B"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict001_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_conflict001_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict001_memory_route",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict001_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Conflict task with fixed M > H > T priority. Which source is highest priority changes with source availability across conditions without changing the rule."
+    },
+    {
+      "task_id": "final_conflict_002",
+      "task_version": "0.1.0",
+      "family": "conflict_integration",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Resolve available route recommendations using the fixed priority rule current tool outranks retained history, and retained history outranks persistent memory. Use the highest-priority available recommendation. Recommendation A means select route A; recommendation B means select route B. If no recommendation is available, select route A. Label, marker, and theme fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "A"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_conflict002_tool_route",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route"
+            },
+            "state": {
+              "route": "A"
+            },
+            "metadata": {
+              "role": "highest_priority_recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict002_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_conflict002_history_route",
+            "content": {
+              "route": "B"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "lower_priority_recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict002_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_conflict002_memory_route",
+            "key": "route",
+            "value": "B",
+            "metadata": {
+              "role": "lowest_priority_recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict002_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_conflict002_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict002_tool_route",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route",
+              "value": "B"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict002_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_conflict002_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict002_history_route",
+            "target_path": null,
+            "replacement_value": {
+              "route": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict002_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_conflict002_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict002_memory_route",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict002_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Conflict task with fixed T > H > M priority. Lower-priority sources intentionally disagree with the selected tool recommendation."
+    },
+    {
+      "task_id": "final_conflict_003",
+      "task_version": "0.1.0",
+      "family": "conflict_integration",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Resolve available route recommendations using this fixed priority rule: current environmental recommendation outranks retained history, retained history outranks the current tool, and the current tool outranks persistent memory. Use the highest-priority available recommendation. Recommendation B means select route B; recommendation A means select route A. If no recommendation is available, select route A. Label, marker, theme, and color fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_conflict003_tool_route",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route"
+            },
+            "state": {
+              "route": "B"
+            },
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict003_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_conflict003_history_route",
+            "content": {
+              "route": "A"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict003_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_conflict003_memory_route",
+            "key": "route",
+            "value": "A",
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict003_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": {
+          "initial_state": {
+            "signals": {
+              "route": "B",
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "final_conflict003_environment_route",
+              "path": [
+                "signals",
+                "route"
+              ]
+            },
+            {
+              "fixture_id": "final_conflict003_color",
+              "path": [
+                "signals",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_conflict003_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict003_tool_route",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict003_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_conflict003_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict003_history_route",
+            "target_path": null,
+            "replacement_value": {
+              "route": "B"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict003_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_conflict003_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict003_memory_route",
+            "target_path": null,
+            "replacement_value": "B",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict003_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_conflict003_environment_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "route"
+            ],
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M",
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Environment-centered conflict integration task with E > H > T > M priority. Current E intentionally conflicts with retained and persistent recommendations."
+    },
+    {
+      "task_id": "final_conflict_004",
+      "task_version": "0.1.0",
+      "family": "conflict_integration",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Priority mode is current. Under current mode, the current tool outranks retained history, and retained history outranks persistent memory. Under legacy mode, persistent memory outranks retained history, and retained history outranks the current tool. Use the highest-priority available route recommendation under the stated mode. Recommendation B means select B; recommendation A means select A. If no recommendation is available, select A. Label, marker, and theme fields are irrelevant. Audit tag AX1.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_conflict004_tool_route",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route"
+            },
+            "state": {
+              "route": "B"
+            },
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict004_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_conflict004_history_route",
+            "content": {
+              "route": "A"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict004_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_conflict004_memory_route",
+            "key": "route",
+            "value": "A",
+            "metadata": {
+              "role": "recommendation"
+            }
+          },
+          {
+            "fixture_id": "final_conflict004_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_conflict004_prompt_pair",
+          "source": "P",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "prompt",
+            "target_path": null,
+            "replacement_value": "Priority mode is legacy. Under current mode, the current tool outranks retained history, and retained history outranks persistent memory. Under legacy mode, persistent memory outranks retained history, and retained history outranks the current tool. Use the highest-priority available route recommendation under the stated mode. Recommendation B means select B; recommendation A means select A. If no recommendation is available, select A. Label, marker, and theme fields are irrelevant. Audit tag AX1.",
+            "length_match_required": false
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "prompt",
+            "target_path": null,
+            "replacement_value": "Priority mode is current. Under current mode, the current tool outranks retained history, and retained history outranks persistent memory. Under legacy mode, persistent memory outranks retained history, and retained history outranks the current tool. Use the highest-priority available route recommendation under the stated mode. Recommendation B means select B; recommendation A means select A. If no recommendation is available, select A. Label, marker, and theme fields are irrelevant. Audit tag BY2.",
+            "length_match_required": false
+          }
+        },
+        {
+          "pair_id": "final_conflict004_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict004_tool_route",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict004_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_conflict004_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict004_history_route",
+            "target_path": null,
+            "replacement_value": {
+              "route": "B"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict004_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_conflict004_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict004_memory_route",
+            "target_path": null,
+            "replacement_value": "B",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_conflict004_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "P",
+          "T",
+          "H",
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Conditional-priority conflict task. P fixes current versus legacy priority mode before final execution; no model output is used to choose that mode."
+    },
+    {
+      "task_id": "final_multisource_001",
+      "task_version": "0.1.0",
+      "family": "multi_source_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Each available decision signal casts one vote for route A or route B. Possible signals are the current tool vote, retained history vote, persistent memory vote, and current environment vote. Select the route with more available votes. On a tie, or if no decision signals are available, select route A. Label, marker, theme, and color fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_multisource001_tool_vote",
+            "tool_name": "key_value",
+            "request": {
+              "key": "vote"
+            },
+            "state": {
+              "vote": "A"
+            },
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource001_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_multisource001_history_vote",
+            "content": {
+              "vote": "B"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource001_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_multisource001_memory_vote",
+            "key": "vote",
+            "value": "B",
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource001_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": {
+          "initial_state": {
+            "signals": {
+              "vote": "B",
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "final_multisource001_environment_vote",
+              "path": [
+                "signals",
+                "vote"
+              ]
+            },
+            {
+              "fixture_id": "final_multisource001_color",
+              "path": [
+                "signals",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_multisource001_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource001_tool_vote",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "vote",
+              "value": "B"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource001_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource001_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource001_history_vote",
+            "target_path": null,
+            "replacement_value": {
+              "vote": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource001_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource001_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource001_memory_vote",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource001_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource001_environment_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "vote"
+            ],
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M",
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Majority-vote integration task. Redundant and pivotal votes can coexist depending on the condition-specific set of available sources."
+    },
+    {
+      "task_id": "final_multisource_002",
+      "task_version": "0.1.0",
+      "family": "multi_source_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Each available decision source contributes its numeric contribution value. Add the available contributions from the current tool, retained history, persistent memory, and current environment. If the total is at least 6, select route B. Otherwise select route A. If no contributions are available, the total is 0. Label, marker, theme, and color fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_multisource002_tool_contribution",
+            "tool_name": "key_value",
+            "request": {
+              "key": "contribution"
+            },
+            "state": {
+              "contribution": 2
+            },
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource002_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_multisource002_history_contribution",
+            "content": {
+              "contribution": 2
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource002_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_multisource002_memory_contribution",
+            "key": "contribution",
+            "value": 1,
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource002_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": {
+          "initial_state": {
+            "signals": {
+              "contribution": 2,
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "final_multisource002_environment_contribution",
+              "path": [
+                "signals",
+                "contribution"
+              ]
+            },
+            {
+              "fixture_id": "final_multisource002_color",
+              "path": [
+                "signals",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_multisource002_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource002_tool_contribution",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "contribution",
+              "value": 1
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource002_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource002_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource002_history_contribution",
+            "target_path": null,
+            "replacement_value": {
+              "contribution": 1
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource002_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource002_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource002_memory_contribution",
+            "target_path": null,
+            "replacement_value": 2,
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource002_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource002_environment_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "contribution"
+            ],
+            "replacement_value": 1,
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M",
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Threshold-sum integration task. Single-source causal relevance depends on the current decision-boundary margin rather than source availability alone."
+    },
+    {
+      "task_id": "final_multisource_003",
+      "task_version": "0.1.0",
+      "family": "multi_source_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Evaluate the available decision flags using this conjunction. Select route B only if the current tool flag is pass, the current environment flag is pass, and at least one of the retained history flag or persistent memory flag is pass. If any required part is unavailable or the conjunction is false, select route A. Label, marker, theme, and color fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_multisource003_tool_flag",
+            "tool_name": "key_value",
+            "request": {
+              "key": "flag"
+            },
+            "state": {
+              "flag": "pass"
+            },
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource003_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_multisource003_history_flag",
+            "content": {
+              "flag": "pass"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource003_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_multisource003_memory_flag",
+            "key": "flag",
+            "value": "fail",
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource003_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": {
+          "initial_state": {
+            "signals": {
+              "flag": "pass",
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "final_multisource003_environment_flag",
+              "path": [
+                "signals",
+                "flag"
+              ]
+            },
+            {
+              "fixture_id": "final_multisource003_color",
+              "path": [
+                "signals",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_multisource003_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource003_tool_flag",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "flag",
+              "value": "fail"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource003_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource003_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource003_history_flag",
+            "target_path": null,
+            "replacement_value": {
+              "flag": "fail"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource003_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource003_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource003_memory_flag",
+            "target_path": null,
+            "replacement_value": "pass",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource003_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource003_environment_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "flag"
+            ],
+            "replacement_value": "fail",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M",
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Conjunctive multi-source integration task. T and E are required gates while H and M form an OR branch, creating nonlinear single-source relevance."
+    },
+    {
+      "task_id": "final_multisource_004",
+      "task_version": "0.1.0",
+      "family": "multi_source_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "The available decision sources form two evidence groups. Group 1 contains the current tool route and retained history route. Group 2 contains persistent memory route and current environment route. Select route B only if at least one available source in Group 1 has value B and at least one available source in Group 2 has value B. Otherwise select route A. Label, marker, theme, and color fields are irrelevant.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "final_multisource004_tool_route",
+            "tool_name": "key_value",
+            "request": {
+              "key": "route"
+            },
+            "state": {
+              "route": "B"
+            },
+            "metadata": {
+              "role": "group1_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource004_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "final_multisource004_history_route",
+            "content": {
+              "route": "B"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "group1_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource004_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "final_multisource004_memory_route",
+            "key": "route",
+            "value": "B",
+            "metadata": {
+              "role": "group2_signal"
+            }
+          },
+          {
+            "fixture_id": "final_multisource004_theme",
+            "key": "theme",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": {
+          "initial_state": {
+            "signals": {
+              "route": "B",
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "final_multisource004_environment_route",
+              "path": [
+                "signals",
+                "route"
+              ]
+            },
+            {
+              "fixture_id": "final_multisource004_color",
+              "path": [
+                "signals",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "final_multisource004_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource004_tool_route",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "route",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource004_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource004_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource004_history_route",
+            "target_path": null,
+            "replacement_value": {
+              "route": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource004_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource004_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource004_memory_route",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "final_multisource004_theme",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "final_multisource004_environment_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "route"
+            ],
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M",
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Paired-redundancy integration task. Each evidence group can contain redundant members, allowing condition-dependent pivotality without changing the deterministic rule."
+    }
+  ]
+}

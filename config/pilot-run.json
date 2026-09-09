@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "author": "Jason M. Pittman",
+    "date": "August 24, 2026",
+    "copyright": "Copyright 2026",
+    "credits": [
+      "Jason M. Pittman"
+    ],
+    "license": "MIT License",
+    "version": "0.1.0",
+    "maintainer": "Jason M. Pittman",
+    "status": "Research"
+  },
+  "schema_version": "pilot-run-v1",
+  "experiment_id": "trajectory_dependence_pilot",
+  "task_suite_path": "config/tasks/pilot-tasks.json",
+  "output_root": "artifacts/pilot",
+  "repetitions": 1,
+  "seed_policy": {
+    "algorithm": "sha256-v1",
+    "base_seed": 20260824,
+    "match_task_repetition_across_conditions": true
+  },
+  "action_inference": {
+    "max_tokens": 64
+  },
+  "explanation_inference": {
+    "max_tokens": 256
+  },
+  "model": {
+    "identifier": "mlx-community/Qwen3.5-27B-8bit",
+    "revision": null,
+    "checksum": null,
+    "quantization": "8bit",
+    "path_environment_variable": "TRAJECTORY_MODEL_PATH"
+  }
+}

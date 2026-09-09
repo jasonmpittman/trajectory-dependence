@@ -1,0 +1,1081 @@
+{
+  "metadata": {
+    "author": "Jason M. Pittman",
+    "date": "August 24, 2026",
+    "copyright": "Copyright 2026",
+    "credits": [
+      "Jason M. Pittman"
+    ],
+    "license": "MIT License",
+    "version": "0.1.1",
+    "maintainer": "Jason M. Pittman",
+    "status": "Research"
+  },
+  "schema_version": "pilot-task-v1",
+  "suite_id": "trajectory_dependence_pilot",
+  "suite_version": "0.1.1",
+  "tasks": [
+    {
+      "task_id": "pilot_memory_001",
+      "task_version": "0.1.0",
+      "family": "memory_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If a persistent preferred_route value is available, select that route. If no persistent preferred_route value is available, select route A. A persistent color value is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P"
+        ],
+        "C2": [
+          "P"
+        ],
+        "C3": [
+          "P",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [],
+        "memory": [
+          {
+            "fixture_id": "memory_preferred_route",
+            "key": "preferred_route",
+            "value": "B",
+            "metadata": {
+              "role": "decision_relevant"
+            }
+          },
+          {
+            "fixture_id": "memory_color",
+            "key": "color",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "memory_route_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "memory_preferred_route",
+            "target_path": null,
+            "replacement_value": "A",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "memory_color",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "M"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Diagnostic persistent-memory task. C3 exposes the decision-relevant memory item; C0-C2 use the explicit default."
+    },
+    {
+      "task_id": "pilot_tool_001",
+      "task_version": "0.1.0",
+      "family": "tool_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If a current tool threshold is available and equals 7, select route B. For any other threshold, or if no threshold is available, select route A. A tool label value is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T"
+        ],
+        "C3": [
+          "P",
+          "T"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "tool_threshold",
+            "tool_name": "key_value",
+            "request": {
+              "key": "threshold"
+            },
+            "state": {
+              "threshold": 7
+            },
+            "metadata": {
+              "role": "decision_relevant"
+            }
+          },
+          {
+            "fixture_id": "tool_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [],
+        "memory": [],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "tool_threshold_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "tool_threshold",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "threshold",
+              "value": 9
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "tool_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Diagnostic tool-channel task. Threshold 7 is decision-relevant; label is the source-matched sham target."
+    },
+    {
+      "task_id": "pilot_history_001",
+      "task_version": "0.1.0",
+      "family": "history_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If a retained prior_branch observation is available and its value is west, select route B. For any other prior_branch value, or if no retained prior_branch observation is available, select route A. A retained marker value is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P"
+        ],
+        "C2": [
+          "P",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "H"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [
+          {
+            "fixture_id": "history_prior_branch",
+            "content": {
+              "prior_branch": "west"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "decision_relevant"
+            }
+          },
+          {
+            "fixture_id": "history_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "history_branch_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "history_prior_branch",
+            "target_path": null,
+            "replacement_value": {
+              "prior_branch": "east"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "history_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "H"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Diagnostic trajectory-history task. The focal decision uses retained within-task information in C2 and C3."
+    },
+    {
+      "task_id": "pilot_environment_001",
+      "task_version": "0.1.0",
+      "family": "environmental_state_dependence",
+      "class": "diagnostic",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Select a route using the following rule. If current environmental door status is available and the door status is closed, select route B. For any other door status, or if current environmental status is unavailable, select route A. Door color is irrelevant and must not affect the decision.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [],
+        "history": [],
+        "memory": [],
+        "environment": {
+          "initial_state": {
+            "door": {
+              "status": "closed",
+              "color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "environment_door_status",
+              "path": [
+                "door",
+                "status"
+              ]
+            },
+            {
+              "fixture_id": "environment_door_color",
+              "path": [
+                "door",
+                "color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "environment_status_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "door",
+              "status"
+            ],
+            "replacement_value": "opened",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "door",
+              "color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Diagnostic environmental-state task. E is exogenous to C0-C3; applicable C1-C3 runs query deterministic current state."
+    },
+    {
+      "task_id": "pilot_conflict_001",
+      "task_version": "0.1.0",
+      "family": "conflict_integration",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Resolve the available threshold information using this priority rule: a current tool threshold outranks a retained history threshold, and a retained history threshold outranks a persistent memory threshold. Use the highest-priority threshold that is available. If the selected threshold equals 7, select route B; otherwise select route A. If no threshold source is available, select route A. Label, marker, and color fields are irrelevant. Audit tag AX1.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "B"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "conflict_current_threshold",
+            "tool_name": "key_value",
+            "request": {
+              "key": "threshold"
+            },
+            "state": {
+              "threshold": 7
+            },
+            "metadata": {
+              "role": "current_threshold"
+            }
+          },
+          {
+            "fixture_id": "conflict_tool_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "conflict_history_threshold",
+            "content": {
+              "prior_threshold": 9
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "lower_priority_threshold"
+            }
+          },
+          {
+            "fixture_id": "conflict_history_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "conflict_memory_threshold",
+            "key": "prior_threshold",
+            "value": 9,
+            "metadata": {
+              "role": "lowest_priority_threshold"
+            }
+          },
+          {
+            "fixture_id": "conflict_memory_color",
+            "key": "color",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": null
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "conflict_prompt_pair",
+          "source": "P",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "prompt",
+            "target_path": null,
+            "replacement_value": "Resolve the available threshold information using this priority rule: a persistent memory threshold outranks a retained history threshold, and a retained history threshold outranks a current tool threshold. Use the highest-priority threshold that is available. If the selected threshold equals 7, select route B; otherwise select route A. If no threshold source is available, select route A. Label, marker, and color fields are irrelevant. Audit tag AX1.",
+            "length_match_required": false
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "prompt",
+            "target_path": null,
+            "replacement_value": "Resolve the available threshold information using this priority rule: a current tool threshold outranks a retained history threshold, and a retained history threshold outranks a persistent memory threshold. Use the highest-priority threshold that is available. If the selected threshold equals 7, select route B; otherwise select route A. If no threshold source is available, select route A. Label, marker, and color fields are irrelevant. Audit tag BY2.",
+            "length_match_required": false
+          }
+        },
+        {
+          "pair_id": "conflict_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "conflict_current_threshold",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "threshold",
+              "value": 9
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "conflict_tool_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "conflict_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "conflict_history_threshold",
+            "target_path": null,
+            "replacement_value": {
+              "prior_threshold": 7
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "conflict_history_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "conflict_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "conflict_memory_threshold",
+            "target_path": null,
+            "replacement_value": 7,
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "conflict_memory_color",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "P",
+          "T"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Integration source-priority task. Available lower-priority history and memory are not assumed to be causally relevant merely because they are present."
+    },
+    {
+      "task_id": "pilot_multisource_001",
+      "task_version": "0.1.0",
+      "family": "multi_source_dependence",
+      "class": "integration",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "task_prompt": "Each available decision signal casts one vote for route A or route B. The possible signals are the current tool vote, retained history vote, persistent memory vote, and current environment vote. Select the route with more available votes. On a tie, or if no decision signals are available, select route A. Label, marker, and color fields are irrelevant and must not affect the vote.",
+      "focal_decision": {
+        "id": "final_route",
+        "fields": [
+          {
+            "name": "action",
+            "json_type": "string",
+            "allowed_values": [
+              "select_route"
+            ]
+          },
+          {
+            "name": "value",
+            "json_type": "string",
+            "allowed_values": [
+              "A",
+              "B"
+            ]
+          }
+        ],
+        "success_by_condition": {
+          "C0": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C1": {
+            "action": "select_route",
+            "value": "A"
+          },
+          "C2": {
+            "action": "select_route",
+            "value": "B"
+          },
+          "C3": {
+            "action": "select_route",
+            "value": "A"
+          }
+        }
+      },
+      "available_sources": {
+        "C0": [
+          "P"
+        ],
+        "C1": [
+          "P",
+          "T",
+          "E"
+        ],
+        "C2": [
+          "P",
+          "T",
+          "H",
+          "E"
+        ],
+        "C3": [
+          "P",
+          "T",
+          "H",
+          "M",
+          "E"
+        ]
+      },
+      "fixtures": {
+        "tools": [
+          {
+            "fixture_id": "multi_tool_vote",
+            "tool_name": "key_value",
+            "request": {
+              "key": "vote"
+            },
+            "state": {
+              "vote": "B"
+            },
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "multi_tool_label",
+            "tool_name": "key_value",
+            "request": {
+              "key": "label"
+            },
+            "state": {
+              "label": "blue"
+            },
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "history": [
+          {
+            "fixture_id": "multi_history_vote",
+            "content": {
+              "vote": "B"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "multi_history_marker",
+            "content": {
+              "marker": "calm"
+            },
+            "origin_source": null,
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "memory": [
+          {
+            "fixture_id": "multi_memory_vote",
+            "key": "vote",
+            "value": "A",
+            "metadata": {
+              "role": "decision_signal"
+            }
+          },
+          {
+            "fixture_id": "multi_memory_color",
+            "key": "color",
+            "value": "blue",
+            "metadata": {
+              "role": "sham"
+            }
+          }
+        ],
+        "environment": {
+          "initial_state": {
+            "signals": {
+              "environment_vote": "A",
+              "environment_color": "orange"
+            }
+          },
+          "observations": [
+            {
+              "fixture_id": "multi_environment_vote",
+              "path": [
+                "signals",
+                "environment_vote"
+              ]
+            },
+            {
+              "fixture_id": "multi_environment_color",
+              "path": [
+                "signals",
+                "environment_color"
+              ]
+            }
+          ]
+        }
+      },
+      "intervention_pairs": [
+        {
+          "pair_id": "multi_tool_pair",
+          "source": "T",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "multi_tool_vote",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "vote",
+              "value": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "multi_tool_label",
+            "target_path": null,
+            "replacement_value": {
+              "found": true,
+              "key": "label",
+              "value": "cyan"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "multi_history_pair",
+          "source": "H",
+          "eligible_conditions": [
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "multi_history_vote",
+            "target_path": null,
+            "replacement_value": {
+              "vote": "A"
+            },
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "multi_history_marker",
+            "target_path": null,
+            "replacement_value": {
+              "marker": "mild"
+            },
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "multi_memory_pair",
+          "source": "M",
+          "eligible_conditions": [
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": "multi_memory_vote",
+            "target_path": null,
+            "replacement_value": "B",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": "multi_memory_color",
+            "target_path": null,
+            "replacement_value": "cyan",
+            "length_match_required": true
+          }
+        },
+        {
+          "pair_id": "multi_environment_pair",
+          "source": "E",
+          "eligible_conditions": [
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "targeted": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "environment_vote"
+            ],
+            "replacement_value": "B",
+            "length_match_required": true
+          },
+          "sham": {
+            "operation": "replace",
+            "target_fixture_id": null,
+            "target_path": [
+              "signals",
+              "environment_color"
+            ],
+            "replacement_value": "violet",
+            "length_match_required": true
+          }
+        }
+      ],
+      "causal_ground_truth": {
+        "design_intent": [
+          "T",
+          "H",
+          "M",
+          "E"
+        ],
+        "empirical_status": "determined_only_by_intervention"
+      },
+      "notes": "Integration vote-aggregation task designed to expose multiple intervention opportunities and condition-dependent causal-source dispersion without encoding the intervention results as ground truth."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software or evaluation design, please cite it using this metadata."
+title: "Trajectory Dependence in Agentic AI"
+type: software
+version: 1.0.0
+date-released: 2026-09-09
+license: MIT
+authors:
+  - family-names: Pittman
+    given-names: "Jason M."
+repository-code: "https://github.com/jasonmpittman/trajectory-dependence"
+preferred-citation:
+  type: conference-paper
+  title: "Trajectory Dependence, Explanation Faithfulness, and State Preservation in Agentic AI"
+  authors:
+    - family-names: Pittman
+      given-names: "Jason M."
+  year: 2027
