@@ -1,4 +1,5 @@
 # Trajectory Dependence in Agentic AI
+[![DOI](https://zenodo.org/badge/1362692384.svg)](https://doi.org/10.5281/zenodo.23196167)
 
 Research code and evaluation infrastructure for measuring when an agent's
 consequential action causally depends on tool returns, retained history,
