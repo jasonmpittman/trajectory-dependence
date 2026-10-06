@@ -14,6 +14,7 @@
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
+\graphicspath{{./}{figures/}{docs/figures/}}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{url}
@@ -160,7 +161,7 @@ The explanation produced a reported source set $R_d$. Scoring was restricted to 
 Execution was complete and stable. All 400 runs produced valid focal behaviors and valid structured explanations; 385 decisions (96.3\%) satisfied task success criteria. The 15 unsuccessful decisions were valid model outputs and remained in the primary analysis. Of 610 matched intervention pairs, 265 (43.4\%) were intervention-positive and 345 (56.6\%) intervention-negative. No pair was sham-unstable or behaviorally unclassifiable. The intervention machinery also passed all 45 diagnostic comparisons: T 15/15, H 10/10, M 5/5, and E 15/15.
 
 \subsection{Trajectory Dependence}
-The primary result is that trajectory dependence was common but not monotonic across increasingly rich configurations. Table~\ref{tab:td} reports the integration-task results: $TD_{any}$ was 0.688 in C1, 0.750 in C2, and 0.625 in C3. The frozen C3--C1 contrast was $-0.063$ with 95\% task-cluster-bootstrap CI $[-0.313,0.188]$; C2--C1 was $+0.063$ $[-0.125,0.250]$ and C3--C2 was $-0.125$ $[-0.375,0.125]$. The observed ordering did not satisfy H1; \textbf{H1 was not supported}. Restricting analysis to task-successful decisions produced 0.688, 0.714, and 0.625, leaving the conclusion unchanged. Figure~\ref{fig:td} visualizes the aggregate pattern.
+The primary result is that trajectory dependence was common but not monotonic across increasingly rich configurations. Table~\ref{tab:td} reports the integration-task results: $TD_{any}$ was 0.688 in C1, 0.750 in C2, and 0.625 in C3. The frozen C3--C1 contrast was $-0.063$ with 95\% task-cluster-bootstrap CI $[-0.313,0.188]$; C2--C1 was $+0.063$ $[-0.125,0.250]$ and C3--C2 was $-0.125$ $[-0.375,0.125]$. The observed ordering did not satisfy H1; \textbf{H1 was not supported}. Restricting analysis to task-successful decisions produced 0.688, 0.714, and 0.625, leaving the conclusion unchanged. Figure~\ref{fig:trajectory-summary}(a) visualizes the aggregate pattern.
 
 \begin{table*}[t]
 \caption{Trajectory dependence on integration tasks}
@@ -182,21 +183,14 @@ C3 & 80 & 0.625 & 0.302 & 1.000 & 0.313\\
 
 The secondary measures reveal why the aggregate result is more informative than a simple null trend. Mean $TD_{norm}$ fell from 0.625 in C1 to 0.417 in C2 and 0.302 in C3; the C3--C1 difference was $-0.323$, 95\% CI $[-0.563,-0.063]$. At the same time, mean $CSD_{scaffold}$ increased from 0.750 to 0.938 to 1.000, and the multi-source-positive rate rose from 6.3\% to 12.5\% to 31.3\%. Among trajectory-dependent decisions, the mean number of positive agent-scaffold sources increased from approximately 1.09 to 1.25 to 1.60, while the share with at least two positive sources rose from 9.1\% to 16.7\% to 50.0\%.
 
-Source-specific effects were also heterogeneous: T decreased from 0.600 to 0.400 to 0.267 across C1--C3; H was 0.231 in C2 and 0.308 in C3; M was 0.357 in C3; and E was 0.429, 0.857, and 0.429. Taken together, these secondary findings are consistent with causal dependence becoming less concentrated in any single eligible source as richer agent-scaffold state becomes available. They may reflect distribution, redundancy, or interaction among sources; the present single-source interventions do not distinguish those mechanisms. This interpretation is emergent rather than preregistered. Figure~\ref{fig:source-specific} shows the source-specific pattern.
+Source-specific effects were also heterogeneous: T decreased from 0.600 to 0.400 to 0.267 across C1--C3; H was 0.231 in C2 and 0.308 in C3; M was 0.357 in C3; and E was 0.429, 0.857, and 0.429. Taken together, these secondary findings are consistent with causal dependence becoming less concentrated in any single eligible source as richer agent-scaffold state becomes available. They may reflect distribution, redundancy, or interaction among sources; the present single-source interventions do not distinguish those mechanisms. This interpretation is emergent rather than preregistered. Figure~\ref{fig:trajectory-summary}(b) shows the source-specific pattern, and Fig.~\ref{fig:task-level}(a) gives the 16-task breakdown. All five repetitions agreed within every task-condition cell; heterogeneity occurred across tasks rather than repetitions.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
-\includegraphics[width=\columnwidth]{figure1_trajectory_dependence.png}
-\caption{Trajectory dependence across agent-scaffold conditions. $TD_{any}$ remains substantial across C1--C3, while the secondary opportunity-normalized measure $TD_{norm}$ decreases as richer agent-scaffold state becomes available. Error bars show task-cluster-bootstrap 95\% confidence intervals. H1 was evaluated using $TD_{any}$; the $TD_{norm}$ pattern is secondary.}
-\label{fig:td}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{figure2_source_specific_td.png}
-\caption{Source-specific trajectory dependence on integration tasks. Points show the proportion of stable eligible decisions for which intervention on a source changed normalized focal behavior while its source-matched sham did not. Missing combinations are structurally unavailable, not zero-valued. Source-specific pivotality is heterogeneous across configurations; in particular, T decreases from C1 to C3 while H, M, and E exhibit condition-specific effects.}
-\label{fig:source-specific}
-\end{figure}
+\includegraphics[width=0.98\textwidth]{figure1_trajectory_summary.png}
+\caption{Trajectory dependence on integration tasks. (a) $TD_{any}$ remains substantial across C1--C3, while the secondary opportunity-normalized $TD_{norm}$ decreases; error bars are task-cluster-bootstrap 95\% confidence intervals. H1 was evaluated using $TD_{any}$. (b) Source-specific pivotality is heterogeneous across configurations. Missing source-condition combinations are structurally unavailable, not zero-valued.}
+\label{fig:trajectory-summary}
+\end{figure*}
 
 \subsection{Self-Explanation Faithfulness}
 The central explanation result was not failure to identify true causal sources, but failure to be selective about them. Among 245 evaluable integration-task decisions, exact-set accuracy was 0.510, macro precision 0.599, macro recall 1.000, and macro F1 0.906; F1 was defined for 170 decisions (Table~\ref{tab:faithfulness}). Thus \textbf{H2a was supported}: explanations frequently failed to recover the complete intervention-defined source set. Wherever recall was defined, however, every intervention-positive source was reported. Errors were dominated by \emph{over-attribution}: causal supersets included genuinely positive sources together with additional evaluable sources whose targeted interventions were individually non-pivotal.
@@ -220,13 +214,13 @@ Integration & 245 & 0.510 & 0.599 & 1.000 & 0.906\\
 
 Of 880 reported standard source claims, 390 (44.3\%) were unverifiable because the source was outside the intervention universe for that decision. A stronger diagnostic occurred in 25/400 explanation runs (6.3\%): the explanation named a source class unavailable in the focal context, corresponding to 25/880 claims (2.8\%). These cases demonstrate that structured self-attribution can extend beyond instantiated causal state, although the experiment does not identify why.
 
-\textbf{H2b was not supported}. The preregistered integration-only regression of per-decision F1 on $CSD_{scaffold}$ produced $\beta=+0.025$, 95\% task-cluster-bootstrap CI $[-0.081,0.113]$; the all-evaluable estimate was $+0.010$ $[-0.095,0.084]$. There was no evidence that explanation quality degraded with increasing causal-source dispersion. Figure~\ref{fig:explanation-csd} reports exact-set accuracy across observed dispersion levels; the regression result, rather than the visual pattern, governs H2b inference.
+\textbf{H2b was not supported}. The preregistered integration-only regression of per-decision F1 on $CSD_{scaffold}$ produced $\beta=+0.025$, 95\% task-cluster-bootstrap CI $[-0.081,0.113]$; the all-evaluable estimate was $+0.010$ $[-0.095,0.084]$. There was no evidence that explanation quality degraded with increasing causal-source dispersion. Figure~\ref{fig:task-level}(b) reports exact-set accuracy by task and condition; the regression result, rather than the visual pattern, governs H2b inference.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{figure3_explanation_vs_csd.png}
-\caption{Exact-set self-explanation accuracy by scaffold causal-source dispersion. Exact-set accuracy is defined for all evaluable decisions; labels give the number of evaluable decisions at each $CSD_{scaffold}$ level. The preregistered integration-only F1 regression did not show degradation with dispersion ($\beta=+0.025$, 95\% task-cluster-bootstrap CI $[-0.081,0.113]$); H2b was not supported.}
-\label{fig:explanation-csd}
+\includegraphics[width=\columnwidth]{figure2_task_level_results.png}
+\caption{Task-level integration results. Cells report counts out of five matched repetitions for (a) $TD_{any}$ and (b) exact-set explanation agreement. Tasks are grouped, top to bottom, by memory, tool, history, environment, conflict, and multi-source families. Repetitions were identical within every task-condition cell, while outcomes varied across tasks.}
+\label{fig:task-level}
 \end{figure}
 
 \section{Discussion and Governance Implications}
